@@ -27,7 +27,6 @@ def view_messages():
 
 # эндпойнт для добавления объявления POST-запросом
 @app.route('/add_message', methods=['POST'])
-@cache.cached()
 def add_message():
     data = request.args
     print(data)
@@ -48,7 +47,6 @@ def message_by_id(message_id):
 
 # эндпойнт добавления тега к существующему объявлению POST-запросом
 @app.route('/tag/<message_id>', methods=['POST'])
-@cache.cached()
 def add_tag_to_message(message_id):
     data = request.args
     if request.method == 'POST':
@@ -60,7 +58,6 @@ def add_tag_to_message(message_id):
 
 # эндпойнт добавления комментария к существующему объявлению POST-запросом
 @app.route('/comment/<message_id>', methods=['POST'])
-@cache.cached()
 def add_com_to_message(message_id):
     data = request.args
     if request.method == 'POST':

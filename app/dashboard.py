@@ -8,7 +8,7 @@ app = Flask(__name__)
 REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
 MONGO_HOST = os.environ.get('MONGO_HOST', 'localhost')
 
-mongo_client = MongoClient()
+mongo_client = MongoClient(MONGO_HOST, 27017)
 db_mongo = mongo_client.dashboard.collection
 
 cache = Cache(app, config={'CACHE_TYPE': 'redis', 'CACHE_REDIS_URL': 'redis://{redis_host}:6379/0'.format(redis_host=REDIS_HOST)})
@@ -19,7 +19,6 @@ def hello():
 
 # эндпойнт показа перечня всех объявлений
 @app.route('/messages', methods=['GET'])
-@cache.cached()
 def view_messages():
     if request.method == 'GET':
         res = db_mongo.find()
@@ -86,4 +85,4 @@ def stats_by_id(message_id):
         return jsonify({'ok': True, 'message': 'Message has {tags} tags and {comments} comments'.format(tags=tags, comments=comments)}), 200
 
 if __name__ == '__main__':
-    app.run(debug=True, host='127.0.0.1', port=5001)
+    app.run(debug=True, host='0.0.0.0', port=5001)
